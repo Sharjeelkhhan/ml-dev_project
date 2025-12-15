@@ -1,21 +1,40 @@
 import sys
 import os
 import pandas as pd
+import tempfile
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from src.train import load_data, train_model
 
+
+def create_dummy_csv():
+    df = pd.DataFrame({
+        "feature1": [1, 2, 3, 4],
+        "feature2": [5, 6, 7, 8],
+        "target": [0, 1, 0, 1]
+    })
+
+    temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".csv")
+    df.to_csv(temp_file.name, index=False)
+    return temp_file.name
+
+
 def test_data_loading():
-    data = load_data("data/dataset.csv")
+    csv_path = create_dummy_csv()
+    data = load_data(csv_path)
     assert isinstance(data, pd.DataFrame)
 
+
 def test_model_training():
-    data = load_data("data/dataset.csv")
+    csv_path = create_dummy_csv()
+    data = load_data(csv_path)
     model, _ = train_model(data)
     assert model is not None
 
+
 def test_shape_validation():
-    data = load_data("data/dataset.csv")
+    csv_path = create_dummy_csv()
+    data = load_data(csv_path)
     _, shape = train_model(data)
     assert shape[0] > 0 and shape[1] > 0
