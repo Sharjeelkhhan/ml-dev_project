@@ -29,12 +29,11 @@ def test_data_loading():
 def test_model_training():
     csv_path = create_dummy_csv()
     data = load_data(csv_path)
-    model, _ = train_model(data)
+    model = train_model(data)
     assert model is not None
 
 
 def test_shape_validation():
     csv_path = create_dummy_csv()
     data = load_data(csv_path)
-    _, shape = train_model(data)
-    assert shape[0] > 0 and shape[1] > 0
+    assert data.shape[0] > 0 and data.shape[1] > 1
