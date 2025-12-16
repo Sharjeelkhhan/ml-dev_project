@@ -2,3 +2,5 @@ pandas
 scikit-learn==1.7.2
 pytest
 flake8
+fastapi
+uvicorn
